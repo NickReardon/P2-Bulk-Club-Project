@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "dbmanager.h"
+#include "adminpanel.h"
 
 namespace Ui {
 class MainWindow;

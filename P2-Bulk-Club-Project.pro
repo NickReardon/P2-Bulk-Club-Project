@@ -25,15 +25,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        adminpanel.cpp \
         dbmanager.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        adminpanel.h \
         dbmanager.h \
         mainwindow.h
 
 FORMS += \
+        adminpanel.ui \
         mainwindow.ui
 
 # Default rules for deployment.
