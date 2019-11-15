@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C://SQLite3/customerDB.db");
+    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -109,7 +109,7 @@ bool DbManager::usernameExists(const QString& username) const
     bool exists = false;
 
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT username FROM customers WHERE (username) = (:username)");
+    checkQuery.prepare("SELECT username FROM BulkClub WHERE (username) = (:username)");
     checkQuery.bindValue(":username", username);
 
     if (checkQuery.exec())
@@ -139,7 +139,7 @@ bool DbManager::nameExists(const QString &name) const
     bool exists = false;
 
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT name FROM customers WHERE (name) = (:name)");
+    checkQuery.prepare("SELECT name FROM BulkClub WHERE (name) = (:name)");
     checkQuery.bindValue(":name", name);
 
     if (checkQuery.exec())
@@ -169,7 +169,7 @@ bool DbManager::emailExists(const QString &email) const
     bool exists = false;
 
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT email FROM customers WHERE (email) = (:email)");
+    checkQuery.prepare("SELECT email FROM BulkClub WHERE (email) = (:email)");
     checkQuery.bindValue(":email", email);
 
     if (checkQuery.exec())
@@ -198,7 +198,7 @@ bool DbManager::CheckAdmin(const QString& username) const
 {
     bool admin = false;
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT admin FROM customers WHERE (username) = (:username)");
+    checkQuery.prepare("SELECT admin FROM login WHERE (username) = (:username)");
     checkQuery.bindValue(":username", username);
 
     if (checkQuery.exec())
@@ -211,7 +211,7 @@ bool DbManager::CheckAdmin(const QString& username) const
     }
     else
     {
-        qDebug() << "person exists failed: " << checkQuery.lastError();
+        qDebug() << "2person exists failed: " << checkQuery.lastError();
     }
     if(admin)
     {
@@ -229,7 +229,7 @@ QString DbManager::GetPassword(const QString& username) const
 {
     QString password;
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT password FROM customers WHERE (username) = (:username)");
+    checkQuery.prepare("SELECT password FROM login WHERE (username) = (:username)");
     checkQuery.bindValue(":username", username);
 
     if (checkQuery.exec())
@@ -242,7 +242,7 @@ QString DbManager::GetPassword(const QString& username) const
     }
     else
     {
-        qDebug() << "person exists failed: " << checkQuery.lastError();
+        qDebug() << "person 1exists failed: " << checkQuery.lastError();
     }
 
     return password;
@@ -258,7 +258,7 @@ bool DbManager::updateAccount(const QString &username, const QString &password, 
     bool success = false;
 
     QSqlQuery query;
-    query.prepare("UPDATE customers SET (name, password, address, city, email, value, admin, interest) = (:n, :pw, :ad, :c, :em, :va, :am, :it) WHERE (username) = (:un)");
+    query.prepare("UPDATE BulkClub SET (name, password, address, city, email, value, admin, interest) = (:n, :pw, :ad, :c, :em, :va, :am, :it) WHERE (username) = (:un)");
     query.bindValue(":n", name);
     query.bindValue(":pw", password);
     query.bindValue(":ad", address);
@@ -290,13 +290,13 @@ bool DbManager::insertEmailR(const QString &email)
 {
     bool success = false;
 
-    QSqlQuery query("INSERT INTO customers (email) VALUES (?)");
+    QSqlQuery query("INSERT INTO BulkClub (email) VALUES (?)");
     query.addBindValue(email);
 
     if(query.exec())
     {
         QSqlQuery query2;
-        query2.prepare("UPDATE customers SET (received) = (:re) WHERE (email) = (:em)");
+        query2.prepare("UPDATE BulkClub SET (received) = (:re) WHERE (email) = (:em)");
         query2.bindValue(":re", 1);
         query2.bindValue(":em", email);
         if(query2.exec())
@@ -327,7 +327,7 @@ bool DbManager::emailRecieved(const QString &email)
     bool success = false;
 
     QSqlQuery query;
-    query.prepare("UPDATE customers SET (received) = (:re) WHERE (email) = (:em)");
+    query.prepare("UPDATE BulkClub SET (received) = (:re) WHERE (email) = (:em)");
     query.bindValue(":re", 1);
     query.bindValue(":em", email);
 
@@ -353,7 +353,7 @@ bool DbManager::addAccount(const QString& username, const QString& password, con
     bool success = false;
     if (!name.isEmpty())
     {
-        QSqlQuery query("INSERT INTO Customers (username, password, name, address, city, email) VALUES (?,?,?,?,?,?)");
+        QSqlQuery query("INSERT INTO BulkClub (username, password, name, address, city, email) VALUES (?,?,?,?,?,?)");
         query.addBindValue(username);
         query.addBindValue(password);
         query.addBindValue(name);
@@ -390,7 +390,7 @@ bool DbManager::removeCustomer(const QString &username)
     if (usernameExists(username))
     {
         QSqlQuery queryDelete;
-        queryDelete.prepare("DELETE FROM customers WHERE (username) = (:un)");
+        queryDelete.prepare("DELETE FROM BulkClub WHERE (username) = (:un)");
         queryDelete.bindValue(":un", username);
         success = queryDelete.exec();
 
@@ -420,7 +420,7 @@ bool DbManager::removeEmailCustomer(const QString &email)
     if(emailExists(email))
     {
         QSqlQuery queryDelete;
-        queryDelete.prepare("DELETE FROM customers WHERE (email) = (:em)");
+        queryDelete.prepare("DELETE FROM BulkClub WHERE (email) = (:em)");
         queryDelete.bindValue(":em", email);
         success = queryDelete.exec();
 
@@ -450,7 +450,7 @@ bool DbManager::makePurchase(const QString &username, const int item1Count, cons
 
     QString name;
     QSqlQuery query;
-    query.prepare("SELECT name FROM customers WHERE ( username ) = ( :username )");
+    query.prepare("SELECT name FROM BulkClub WHERE ( username ) = ( :username )");
     query.bindValue(":username", username);
 
     if (query.exec())
@@ -505,7 +505,7 @@ bool DbManager::submitTestimonials(const QString &text, const QString &username)
     QString name;
 
     QSqlQuery query;
-    query.prepare("SELECT name FROM customers WHERE (username) = (:username)");
+    query.prepare("SELECT name FROM BulkClub WHERE (username) = (:username)");
     query.bindValue(":username", username);
 
     if (query.exec())
