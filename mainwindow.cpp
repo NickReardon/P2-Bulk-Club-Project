@@ -38,9 +38,9 @@ void MainWindow::on_loginButton_clicked()
             {
                 ui->invalidLabel->setText("");
 
-
-                hide();
                 /*
+                hide();
+
                 Products products(this, usernameInput);
                 products.setModal(true);
                 products.exec();
