@@ -40,8 +40,37 @@
        <x>10</x>
        <y>10</y>
        <width>781</width>
-       <height>361</height>
+       <height>331</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>350</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>350</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Total Purchases</string>
      </property>
     </widget>
    </widget>
