@@ -16,6 +16,9 @@ public:
     explicit adminPanel(QWidget *parent = nullptr);
     ~adminPanel();
 
+private slots:
+    void on_logoutButton_clicked();
+
 private:
     Ui::adminPanel *ui;
     DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
