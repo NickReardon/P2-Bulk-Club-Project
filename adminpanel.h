@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "dbmanager.h"
+#include "addcustomer.h"
 
 namespace Ui {
 class adminPanel;
@@ -18,6 +19,8 @@ public:
 
 private slots:
     void on_logoutButton_clicked();
+
+    void on_addCustomerButton_clicked();
 
 private:
     Ui::adminPanel *ui;

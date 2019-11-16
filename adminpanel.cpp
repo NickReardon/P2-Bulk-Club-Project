@@ -51,3 +51,12 @@ void adminPanel::on_logoutButton_clicked()
 {
     hide();
 }
+
+void adminPanel::on_addCustomerButton_clicked()
+{
+    addCustomer window2;
+    window2.setModal(true);
+    window2.exec();
+
+    dbManager.reOpen();
+}
