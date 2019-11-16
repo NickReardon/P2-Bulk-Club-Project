@@ -38,9 +38,9 @@ void MainWindow::on_loginButton_clicked()
             {
                 ui->invalidLabel->setText("");
 
-
-                hide();
                 /*
+                hide();
+
                 Products products(this, usernameInput);
                 products.setModal(true);
                 products.exec();
@@ -52,15 +52,13 @@ void MainWindow::on_loginButton_clicked()
             {
                 ui->invalidLabel->setText("");
 
-                /*
                 hide();
 
-                Admin admin;
+                adminPanel admin;
                 admin.setModal(true);
                 admin.exec();
 
                 show();
-                */
             }
         }
         else
