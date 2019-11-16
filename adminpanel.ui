@@ -34,6 +34,16 @@
     <attribute name="title">
      <string>Tab 2</string>
     </attribute>
+    <widget class="QTableView" name="purchaseView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>771</width>
+       <height>361</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="logoutButton">
