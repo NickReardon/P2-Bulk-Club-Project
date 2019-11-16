@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -34,6 +34,16 @@
     <attribute name="title">
      <string>Tab 2</string>
     </attribute>
+    <widget class="QTableView" name="purchaseView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>781</width>
+       <height>361</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="logoutButton">

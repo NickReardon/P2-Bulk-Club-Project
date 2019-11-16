@@ -5,6 +5,11 @@
 #include <QSqlDatabase>
 #include <QString>
 #include <QDateTime>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+#include <QDebug>
+#include <QSqlQueryModel>
 
 /**
  * \class DbManager
