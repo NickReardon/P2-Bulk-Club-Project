@@ -29,3 +29,8 @@ adminPanel::~adminPanel()
 {
     delete ui;
 }
+
+void adminPanel::on_logoutButton_clicked()
+{
+    hide();
+}
