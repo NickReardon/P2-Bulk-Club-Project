@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,13 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        addcustomer.cpp \
+        adminpanel.cpp \
+        dbmanager.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        addcustomer.h \
+        adminpanel.h \
+        dbmanager.h \
         mainwindow.h
 
 FORMS += \
+        addcustomer.ui \
+        adminpanel.ui \
         mainwindow.ui
 
 # Default rules for deployment.
