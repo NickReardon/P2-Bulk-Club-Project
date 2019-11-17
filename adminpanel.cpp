@@ -40,6 +40,10 @@ adminPanel::adminPanel(QWidget *parent) :
     {
         qDebug() << "fail!";
     }
+
+    ui->salesReportCalendar->setSelectedDate(QDate::currentDate());
+    tempDate = ui->salesReportCalendar->selectedDate();
+
 }
 
 adminPanel::~adminPanel()
@@ -59,4 +63,91 @@ void adminPanel::on_addCustomerButton_clicked()
     window2.exec();
 
     dbManager.reOpen();
+}
+
+void adminPanel::on_GenerateReportButton_released()
+{
+    QSqlQueryModel *model = new QSqlQueryModel;
+
+    int firstDateYear = tempDate.year();
+    int firstDateMonth = tempDate.month();
+    int firstDateDay = tempDate.month();
+
+    int lastDateYear = tempDate.year();
+    int lastDateMonth = tempDate.month();
+    int lastDateDay = tempDate.day();
+
+
+    switch(ui->ReportTypeDropdown->currentIndex())
+    {
+    case 0://daily
+        break;
+
+    case 1://weekly
+        firstDateDay = (firstDateDay - tempDate.dayOfWeek());
+        qDebug() << firstDateDay;
+        lastDateDay = (lastDateDay + ( 7 - tempDate.dayOfWeek()));
+        qDebug() << lastDateDay;
+        break;
+    case 2://monthly
+        firstDateDay = 1;
+
+        switch(tempDate.month())
+        {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            lastDateDay = 31;
+            break;
+
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            lastDateDay = 30;
+            break;
+
+        case 2:
+            if(QDate::isLeapYear(tempDate.year()))
+            {
+                lastDateDay = 29;
+            }
+            else
+            {
+                lastDateDay = 28;
+            }
+            break;
+
+        }
+        break;
+
+    case 3://yearly
+
+
+
+        break;
+
+    case 4://all time
+
+
+
+        break;
+    }
+
+
+    dbManager.generateSalesReport(QDate(firstDateYear, firstDateMonth, firstDateDay),
+                                  QDate(lastDateYear, lastDateMonth, lastDateDay),
+                                  model);
+
+    ui->SalesReportTable->setModel(model);
+}
+
+void adminPanel::on_salesReportCalendar_selectionChanged()
+{
+    tempDate = ui->salesReportCalendar->selectedDate();
+    qDebug() << "Date changed: " << tempDate << endl;
 }

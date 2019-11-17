@@ -163,6 +163,10 @@ public:
      * @return true - removes the testimonial, false - keeps the testimonial
      */
     bool removeTestimonial(const int id);
+
+
+
+    bool generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model);
 private:
     QSqlDatabase m_db;
 };

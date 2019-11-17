@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -590,5 +590,30 @@ bool DbManager::removeTestimonial(const int id)
 
 
 return success;
+
+}
+
+bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model)
+{
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by time ASC");
+    qry->bindValue(":start", startDate);
+    qry->bindValue(":end", endDate);
+
+
+    if(qry->exec())
+    {
+        model->setQuery(*qry);
+
+        return true;
+    }
+    else
+    {
+        qDebug() << "fail!";
+
+        return false;
+    }
 
 }
