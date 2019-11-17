@@ -106,7 +106,7 @@ public:
      * @param username, password, name, address, city, and email of the user
      * @return true - adds the account, false - does not add the account
      */
-    bool addAccount(const QString &username, const QString &password, const QString &name, const QString &address, const QString &city, const QString &email);
+    bool addAccount(const QString &id, const QString &name, const QString &expire, const QString &type);
 
     /**
      * @brief ensures that the email has been received by the user

@@ -348,18 +348,16 @@ bool DbManager::emailRecieved(const QString &email)
  * @param username, password, name, address, city, and email of the user
  * @return true - adds the account, false - does not add the account
  */
-bool DbManager::addAccount(const QString& username, const QString& password, const QString& name, const QString& address, const QString& city, const QString &email)
+bool DbManager::addAccount(const QString &id, const QString &name, const QString &expire, const QString &type)
 {
     bool success = false;
     if (!name.isEmpty())
     {
-        QSqlQuery query("INSERT INTO BulkClub (username, password, name, address, city, email) VALUES (?,?,?,?,?,?)");
-        query.addBindValue(username);
-        query.addBindValue(password);
+        QSqlQuery query("INSERT INTO customers (id, name, expire, type) VALUES (?,?,?,?)");
+        query.addBindValue(id);
         query.addBindValue(name);
-        query.addBindValue(address);
-        query.addBindValue(city);
-        query.addBindValue(email);
+        query.addBindValue(expire);
+        query.addBindValue(type);
 
         if(query.exec())
         {

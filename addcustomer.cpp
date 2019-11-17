@@ -36,7 +36,7 @@ void addCustomer::on_addCustomerButton_clicked()
 
     if(ui->typeEdit->text() == "")
     {
-        ui->typeEdit->setPlaceholderText("Membership Type EMPTY!");
+        ui->typeEdit->setPlaceholderText("Type EMPTY!");
         success = true;
     }
 
@@ -49,7 +49,14 @@ void addCustomer::on_addCustomerButton_clicked()
     if(dbManager.nameExists(ui->nameEdit->text()))
     {
         ui->nameEdit->setText("");
-        ui->nameEdit->setPlaceholderText("Choose a different name!");
+        ui->nameEdit->setPlaceholderText("Use different name!");
         success = true;
     }
+
+    if(!success)
+    {
+        dbManager.addAccount(ui->idEdit->text(), ui->nameEdit->text(), ui->expirationEdit->text(), ui->typeEdit->text());
+        hide();
+    }
+
 }
