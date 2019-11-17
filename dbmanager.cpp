@@ -139,7 +139,7 @@ bool DbManager::nameExists(const QString &name) const
     bool exists = false;
 
     QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT name FROM BulkClub WHERE (name) = (:name)");
+    checkQuery.prepare("SELECT name FROM customers WHERE (name) = (:name)");
     checkQuery.bindValue(":name", name);
 
     if (checkQuery.exec())

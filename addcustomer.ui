@@ -22,6 +22,9 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="placeholderText">
+    <string>ID</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="nameEdit">
    <property name="geometry">
@@ -31,6 +34,9 @@
      <width>113</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Name</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="expirationEdit">
@@ -42,6 +48,9 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="placeholderText">
+    <string>Date</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="typeEdit">
    <property name="geometry">
@@ -51,6 +60,9 @@
      <width>113</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Type</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
