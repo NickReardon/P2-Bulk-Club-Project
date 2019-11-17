@@ -2,6 +2,7 @@
 #define ADDCUSTOMER_H
 
 #include <QDialog>
+#include "dbmanager.h"
 
 namespace Ui {
 class addCustomer;
@@ -15,8 +16,14 @@ public:
     explicit addCustomer(QWidget *parent = nullptr);
     ~addCustomer();
 
+private slots:
+    void on_cancelCustomerButton_clicked();
+
+    void on_addCustomerButton_clicked();
+
 private:
     Ui::addCustomer *ui;
+    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
 };
 
 #endif // ADDCUSTOMER_H
