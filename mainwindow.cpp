@@ -68,3 +68,14 @@ void MainWindow::on_loginButton_clicked()
 
         dbManager.reOpen();
 }
+
+void MainWindow::on_usernameEdit_returnPressed()
+{
+    on_loginButton_clicked();
+}
+
+
+void MainWindow::on_passwordEdit_returnPressed()
+{
+    on_loginButton_clicked();
+}
