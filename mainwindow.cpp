@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QPixmap pix("C:/Users/farna/Documents/P2-Bulk-Club-Project/SAND.png");
+    QPixmap pix("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/SAND.png");
     ui->picLabel->setPixmap(pix);
 
     //test
@@ -67,4 +67,15 @@ void MainWindow::on_loginButton_clicked()
         }
 
         dbManager.reOpen();
+}
+
+void MainWindow::on_usernameEdit_returnPressed()
+{
+    on_loginButton_clicked();
+}
+
+
+void MainWindow::on_passwordEdit_returnPressed()
+{
+    on_loginButton_clicked();
 }

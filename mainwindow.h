@@ -22,9 +22,14 @@ private slots:
 
     void on_loginButton_clicked();
 
+    void on_usernameEdit_returnPressed();
+
+    void on_passwordEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
-    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
 };
 
 #endif // MAINWINDOW_H
+//Test test test test
