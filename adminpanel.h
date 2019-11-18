@@ -26,6 +26,10 @@ private slots:
 
     void on_salesReportCalendar_selectionChanged();
 
+    void on_salesReportCalendar_clicked(const QDate &date);
+
+    void on_PrintReportButton_released();
+
 private:
     Ui::adminPanel *ui;
     DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");

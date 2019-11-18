@@ -69,13 +69,10 @@ void adminPanel::on_GenerateReportButton_released()
 {
     QSqlQueryModel *model = new QSqlQueryModel;
 
-    int firstDateYear = tempDate.year();
-    int firstDateMonth = tempDate.month();
-    int firstDateDay = tempDate.month();
+    QDate firstDate = tempDate;
 
-    int lastDateYear = tempDate.year();
-    int lastDateMonth = tempDate.month();
-    int lastDateDay = tempDate.day();
+    QDate lastDate = tempDate;
+
 
 
     switch(ui->ReportTypeDropdown->currentIndex())
@@ -84,64 +81,46 @@ void adminPanel::on_GenerateReportButton_released()
         break;
 
     case 1://weekly
-        firstDateDay = (firstDateDay - tempDate.dayOfWeek());
-        qDebug() << firstDateDay;
-        lastDateDay = (lastDateDay + ( 7 - tempDate.dayOfWeek()));
-        qDebug() << lastDateDay;
+        if(tempDate.dayOfWeek() == 7)
+        {
+            firstDate = firstDate.addDays( 0 - ( 7 - firstDate.dayOfWeek()));
+            lastDate = lastDate.addDays( 0 - ( 1 - lastDate.dayOfWeek()));
+        }
+        else
+        {
+            firstDate = firstDate.addDays( 0 - firstDate.dayOfWeek());
+            lastDate = lastDate.addDays( 6 - lastDate.dayOfWeek());
+        }
+
         break;
     case 2://monthly
-        firstDateDay = 1;
+        firstDate.setDate(firstDate.year(), firstDate.month(), 1);
 
-        switch(tempDate.month())
-        {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            lastDateDay = 31;
-            break;
-
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            lastDateDay = 30;
-            break;
-
-        case 2:
-            if(QDate::isLeapYear(tempDate.year()))
-            {
-                lastDateDay = 29;
-            }
-            else
-            {
-                lastDateDay = 28;
-            }
-            break;
-
-        }
+        lastDate.setDate(lastDate.year(), lastDate.month(), lastDate.daysInMonth());
         break;
 
     case 3://yearly
+        firstDate.setDate(firstDate.year(), 1, 1);
 
+
+        lastDate.setDate(lastDate.year(), 12, 31);
 
 
         break;
 
     case 4://all time
+        firstDate.setDate(1900, 1, 1);
 
-
+        lastDate.setDate(2999, 12, 31);
 
         break;
     }
 
 
-    dbManager.generateSalesReport(QDate(firstDateYear, firstDateMonth, firstDateDay),
-                                  QDate(lastDateYear, lastDateMonth, lastDateDay),
-                                  model);
+
+
+    qDebug() << firstDate << lastDate;
+    dbManager.generateSalesReport(firstDate, lastDate, model);
 
     ui->SalesReportTable->setModel(model);
 }
@@ -150,4 +129,15 @@ void adminPanel::on_salesReportCalendar_selectionChanged()
 {
     tempDate = ui->salesReportCalendar->selectedDate();
     qDebug() << "Date changed: " << tempDate << endl;
+}
+
+void adminPanel::on_salesReportCalendar_clicked(const QDate &date)
+{
+    tempDate = date;
+    qDebug() << "Date changed: " << tempDate << endl;
+}
+
+void adminPanel::on_PrintReportButton_released()
+{
+
 }
