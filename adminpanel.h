@@ -22,9 +22,18 @@ private slots:
 
     void on_addCustomerButton_clicked();
 
+    void on_GenerateReportButton_released();
+
+    void on_salesReportCalendar_clicked(const QDate &date);
+
+    void on_salesReportCalendar_selectionChanged();
+
 private:
     Ui::adminPanel *ui;
-    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
+
+    QDate tempDate;
+
 };
 
 #endif // ADMINPANEL_H

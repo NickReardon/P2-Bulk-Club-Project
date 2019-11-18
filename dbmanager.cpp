@@ -588,5 +588,30 @@ bool DbManager::removeTestimonial(const int id)
 
 
 return success;
+}
 
+
+
+bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model)
+{
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by time ASC");
+    qry->bindValue(":start", startDate);
+    qry->bindValue(":end", endDate);
+
+
+    if(qry->exec())
+    {
+        model->setQuery(*qry);
+
+        return true;
+    }
+    else
+    {
+        qDebug() << "fail!";
+
+        return false;
+    }
 }
