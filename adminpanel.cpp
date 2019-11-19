@@ -218,13 +218,22 @@ void adminPanel::on_testButton_clicked()
 
 void adminPanel::on_productSearch_editingFinished()
 {
-    QString str = ui->productSearch->text();
     QSqlQueryModel* modal=new QSqlQueryModel();
 
     QSqlQuery* qry=new QSqlQuery();
+    QString str = ui->productSearch->text();
+    if(str == "")
+    {
+        qry->prepare("SELECT * FROM products ORDER by name ASC");
 
-    qry->prepare("SELECT * FROM products WHERE name = :n");
-    qry->bindValue(":n",str);
+    }else
+    {
+        qry->prepare("SELECT * FROM products WHERE name = :n");
+        qry->bindValue(":n",str);
+    }
+
+
+
     qry->exec();
     modal->setQuery(*qry);
     ui->productView->setModel(modal);
