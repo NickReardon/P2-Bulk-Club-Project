@@ -29,18 +29,21 @@ SOURCES += \
         adminpanel.cpp \
         dbmanager.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        products.cpp
 
 HEADERS += \
         addcustomer.h \
         adminpanel.h \
         dbmanager.h \
-        mainwindow.h
+        mainwindow.h \
+        products.h
 
 FORMS += \
         addcustomer.ui \
         adminpanel.ui \
-        mainwindow.ui
+        mainwindow.ui \
+        products.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,5 +1,6 @@
 #include "adminpanel.h"
 #include "ui_adminpanel.h"
+#include "products.h"
 
 adminPanel::adminPanel(QWidget *parent) :
     QDialog(parent),
@@ -35,6 +36,22 @@ adminPanel::adminPanel(QWidget *parent) :
         modal2->setQuery(*qry2);
 
         ui->memberView->setModel(modal2);
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+    QSqlQueryModel* modal3=new QSqlQueryModel();
+
+    QSqlQuery* qry3=new QSqlQuery();
+
+    qry3->prepare("SELECT * FROM products ORDER by name ASC");
+
+    if(qry3->exec())
+    {
+        modal3->setQuery(*qry3);
+
+        ui->productView->setModel(modal3);
     }
     else
     {
@@ -150,3 +167,66 @@ void adminPanel::on_salesReportCalendar_clicked(const QDate &date)
     qDebug() << "Date changed: " << tempDate << endl;
 }
 
+
+void adminPanel::on_productAdd_clicked()
+{
+    products insertProduct(1);
+    insertProduct.setModal(true);
+    insertProduct.exec();
+
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM products ORDER by name ASC");
+    qry->exec();
+    modal->setQuery(*qry);
+    ui->productView->setModel(modal);
+}
+
+void adminPanel::on_productDel_clicked()
+{
+    products delProduct(2);
+    delProduct.setModal(true);
+    delProduct.exec();
+
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM products ORDER by name ASC");
+    qry->exec();
+    modal->setQuery(*qry);
+    ui->productView->setModel(modal);
+}
+
+void adminPanel::on_testButton_clicked()
+{
+    products purProduct(3);
+    purProduct.setModal(true);
+    purProduct.exec();
+
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM products ORDER by name ASC");
+    qry->exec();
+    modal->setQuery(*qry);
+    ui->productView->setModel(modal);
+}
+
+void adminPanel::on_productSearch_editingFinished()
+{
+    QString str = ui->productSearch->text();
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM products WHERE name = :n");
+    qry->bindValue(":n",str);
+    qry->exec();
+    modal->setQuery(*qry);
+    ui->productView->setModel(modal);
+
+}
