@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {

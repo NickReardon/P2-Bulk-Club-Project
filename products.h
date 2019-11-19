@@ -24,7 +24,8 @@ private slots:
 
 private:
     Ui::products *ui;
-     DbManager dbManager = DbManager("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
+
+    DbManager dbManager = DbManager("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
 };
 
 

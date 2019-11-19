@@ -174,14 +174,16 @@ void adminPanel::on_productAdd_clicked()
     insertProduct.setModal(true);
     insertProduct.exec();
 
+    dbManager.reOpen();
     QSqlQueryModel* modal=new QSqlQueryModel();
-
     QSqlQuery* qry=new QSqlQuery();
 
     qry->prepare("SELECT * FROM products ORDER by name ASC");
-    qry->exec();
-    modal->setQuery(*qry);
-    ui->productView->setModel(modal);
+    if(qry->exec())
+    {
+        modal->setQuery(*qry);
+        ui->productView->setModel(modal);
+    }
 }
 
 void adminPanel::on_productDel_clicked()
@@ -190,14 +192,17 @@ void adminPanel::on_productDel_clicked()
     delProduct.setModal(true);
     delProduct.exec();
 
+    dbManager.reOpen();
     QSqlQueryModel* modal=new QSqlQueryModel();
 
     QSqlQuery* qry=new QSqlQuery();
 
     qry->prepare("SELECT * FROM products ORDER by name ASC");
-    qry->exec();
-    modal->setQuery(*qry);
-    ui->productView->setModel(modal);
+    if(qry->exec())
+    {
+        modal->setQuery(*qry);
+        ui->productView->setModel(modal);
+    }
 }
 
 void adminPanel::on_testButton_clicked()
@@ -206,36 +211,43 @@ void adminPanel::on_testButton_clicked()
     purProduct.setModal(true);
     purProduct.exec();
 
+    dbManager.reOpen();
     QSqlQueryModel* modal=new QSqlQueryModel();
-
     QSqlQuery* qry=new QSqlQuery();
 
     qry->prepare("SELECT * FROM products ORDER by name ASC");
-    qry->exec();
-    modal->setQuery(*qry);
-    ui->productView->setModel(modal);
+    if(qry->exec())
+    {
+        modal->setQuery(*qry);
+        ui->productView->setModel(modal);
+    }
 }
 
 void adminPanel::on_productSearch_editingFinished()
 {
-    QSqlQueryModel* modal=new QSqlQueryModel();
-
-    QSqlQuery* qry=new QSqlQuery();
     QString str = ui->productSearch->text();
+
+    dbManager.reOpen();
+    QSqlQueryModel* modal=new QSqlQueryModel();
+    QSqlQuery *qry=new QSqlQuery();
+
     if(str == "")
     {
         qry->prepare("SELECT * FROM products ORDER by name ASC");
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->productView->setModel(modal);
+        }
 
     }else
     {
         qry->prepare("SELECT * FROM products WHERE name = :n");
         qry->bindValue(":n",str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->productView->setModel(modal);
+        }
     }
-
-
-
-    qry->exec();
-    modal->setQuery(*qry);
-    ui->productView->setModel(modal);
-
 }
