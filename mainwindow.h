@@ -28,8 +28,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
+
+    DbManager dbManager = DbManager("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
 };
 
 #endif // MAINWINDOW_H
-//Test test test test
