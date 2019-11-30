@@ -30,6 +30,7 @@ void MainWindow::on_loginButton_clicked()
 
         QString usernameInput = ui->usernameEdit->text();
         QString passwordInput = ui->passwordEdit->text();
+        ui->passwordEdit->clear();
 
         password = dbManager.GetPassword(usernameInput);
         if(passwordInput == password)

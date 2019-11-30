@@ -93,6 +93,7 @@ public:
      * @return true - name exists, false - name does not exist within the database
      */
     bool nameExists(const QString &name) const;
+    bool productExists(const QString &name) const;
 
     /**
      * @brief checks to see if the email entered exists within the database
