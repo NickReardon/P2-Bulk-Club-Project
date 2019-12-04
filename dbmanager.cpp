@@ -158,6 +158,30 @@ bool DbManager::nameExists(const QString &name) const
 
     return exists;
 }
+bool DbManager::productExists(const QString& name) const
+{
+    bool exists = false;
+
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT name FROM products WHERE (name) = (:name)");
+    checkQuery.bindValue(":name", name);
+
+    if (checkQuery.exec())
+    {
+        if (checkQuery.next())
+        {
+            exists = true;
+            QString username = checkQuery.value("username").toString();
+            qDebug() << username;
+        }
+    }
+    else
+    {
+        qDebug() << "product exists failed: " << checkQuery.lastError();
+    }
+
+    return exists;
+}
 
 /**
  * @brief checks to see if the email entered exists within the database
