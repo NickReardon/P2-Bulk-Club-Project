@@ -300,5 +300,9 @@ void adminPanel::on_removeCustomerButton_clicked()
 
 void adminPanel::on_upgradeCustomer_clicked()
 {
+    confirmUpdate window2;
+    window2.setModal(true);
+    window2.exec();
 
+    dbManager.reOpen();
 }

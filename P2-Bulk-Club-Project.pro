@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         addcustomer.cpp \
         adminpanel.cpp \
+        confirmupdate.cpp \
         dbmanager.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 HEADERS += \
         addcustomer.h \
         adminpanel.h \
+        confirmupdate.h \
         dbmanager.h \
         mainwindow.h \
         products.h
@@ -42,6 +44,7 @@ HEADERS += \
 FORMS += \
         addcustomer.ui \
         adminpanel.ui \
+        confirmupdate.ui \
         mainwindow.ui \
         products.ui
 
