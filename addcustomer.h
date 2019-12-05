@@ -23,7 +23,7 @@ private slots:
 
 private:
     Ui::addCustomer *ui;
-    DbManager dbManager = DbManager("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
 };
 
 #endif // ADDCUSTOMER_H

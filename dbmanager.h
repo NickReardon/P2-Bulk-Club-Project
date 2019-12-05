@@ -93,6 +93,7 @@ public:
      * @return true - name exists, false - name does not exist within the database
      */
     bool nameExists(const QString &name) const;
+    bool idExists(const QString &id) const;
     bool productExists(const QString &name) const;
 
     /**
@@ -122,6 +123,7 @@ public:
      * @return true - will remove user from database, false - will keep the user within the database
      */
     bool removeCustomer(const QString &username);
+    bool removeCustomerId(const QString &ID);
 
     /**
      * @brief removes customer from email list

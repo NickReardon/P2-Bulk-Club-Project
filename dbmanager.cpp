@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -158,6 +158,33 @@ bool DbManager::nameExists(const QString &name) const
 
     return exists;
 }
+
+bool DbManager::idExists(const QString &id) const
+{
+    bool exists = false;
+
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT id FROM customers WHERE (id) = (:id)");
+    checkQuery.bindValue(":id", id);
+
+    if (checkQuery.exec())
+    {
+        if (checkQuery.next())
+        {
+            exists = true;
+            QString name = checkQuery.value("id").toString();
+            qDebug() << name;
+        }
+    }
+    else
+    {
+        qDebug() << "person exists failed: " << checkQuery.lastError();
+    }
+
+    return exists;
+}
+
+
 bool DbManager::productExists(const QString& name) const
 {
     bool exists = false;
@@ -400,6 +427,31 @@ bool DbManager::addAccount(const QString &id, const QString &name, const QString
     return success;
 }
 
+bool DbManager::removeCustomerId(const QString &ID)
+{
+    bool success = false;
+
+    if (idExists(ID))
+    {
+        QSqlQuery queryDelete;
+        queryDelete.prepare("DELETE FROM customers WHERE (id) = (:id)");
+        queryDelete.bindValue(":id", ID);
+        success = queryDelete.exec();
+
+        if(!success)
+        {
+            qDebug() << "remove person failed: " << queryDelete.lastError();
+        }
+    }
+    else
+    {
+        qDebug() << "remove person failed: person doesnt exist";
+        qDebug() << ID;
+    }
+
+    return success;
+}
+
 /**
  * @brief removes customer from email list
  * @param email of the user
@@ -409,11 +461,11 @@ bool DbManager::removeCustomer(const QString &username)
 {
     bool success = false;
 
-    if (usernameExists(username))
+    if (nameExists(username))
     {
         QSqlQuery queryDelete;
-        queryDelete.prepare("DELETE FROM BulkClub WHERE (username) = (:un)");
-        queryDelete.bindValue(":un", username);
+        queryDelete.prepare("DELETE FROM customers WHERE (name) = (:name)");
+        queryDelete.bindValue(":name", username);
         success = queryDelete.exec();
 
         if(!success)

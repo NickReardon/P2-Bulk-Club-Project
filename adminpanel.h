@@ -36,9 +36,13 @@ private slots:
 
     void on_productSearch_editingFinished();
 
+    void on_removeCustomerButton_clicked();
+
+    void on_upgradeCustomer_clicked();
+
 private:
     Ui::adminPanel *ui;
-    DbManager dbManager = DbManager("C:/Users/Nox/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
 
     QDate tempDate;
 
