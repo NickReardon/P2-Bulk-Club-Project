@@ -251,3 +251,54 @@ void adminPanel::on_productSearch_editingFinished()
         }
     }
 }
+
+void adminPanel::on_removeCustomerButton_clicked()
+{
+    bool success = false;
+
+    if(ui->removeEdit->text() == "")
+    {
+        ui->removeEdit->setPlaceholderText("Name or ID EMPTY!");
+        success = true;
+    }
+
+    else if(!dbManager.nameExists(ui->removeEdit->text()) && !dbManager.idExists(ui->removeEdit->text()))
+    {
+        ui->removeEdit->setText("");
+        ui->removeEdit->setPlaceholderText("Name Doesn't Exists!");
+        success = true;
+    }
+
+    if(!success && dbManager.nameExists(ui->removeEdit->text()))
+    {
+        dbManager.removeCustomer(ui->removeEdit->text());
+        ui->removeEdit->setText("");
+    }
+    else if(!success && dbManager.idExists(ui->removeEdit->text()))
+    {
+        dbManager.removeCustomerId(ui->removeEdit->text());
+        ui->removeEdit->setText("");
+    }
+
+    QSqlQueryModel* modal2=new QSqlQueryModel();
+
+    QSqlQuery* qry2=new QSqlQuery();
+
+    qry2->prepare("SELECT * FROM customers ORDER by id ASC");
+
+    if(qry2->exec())
+    {
+        modal2->setQuery(*qry2);
+
+        ui->memberView->setModel(modal2);
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+}
+
+void adminPanel::on_upgradeCustomer_clicked()
+{
+
+}
