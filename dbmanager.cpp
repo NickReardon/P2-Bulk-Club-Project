@@ -304,29 +304,41 @@ QString DbManager::GetPassword(const QString& username) const
  * @param username, password, name, address, city of the user, value changing and admin ability to change information
  * @return true - updates account information, false - does not allow account to be updates
  */
-bool DbManager::updateAccount(const QString &username, const QString &password, const QString &name, const QString &address, const QString &city, const QString &email, const QString &value, const int admin, const QString& interest)
+bool DbManager::updateAccount(const QString &change, const QString &user)
 {
     bool success = false;
 
-    QSqlQuery query;
-    query.prepare("UPDATE BulkClub SET (name, password, address, city, email, value, admin, interest) = (:n, :pw, :ad, :c, :em, :va, :am, :it) WHERE (username) = (:un)");
-    query.bindValue(":n", name);
-    query.bindValue(":pw", password);
-    query.bindValue(":ad", address);
-    query.bindValue(":c", city);
-    query.bindValue(":em", email);
-    query.bindValue(":va", value);
-    query.bindValue(":am", admin);
-    query.bindValue(":it", interest);
-    query.bindValue(":un", username);
+    if(nameExists(user))
+    {
+        QSqlQuery query;
+        query.prepare("UPDATE customers SET (type) = (:n) WHERE (name) = (:un)");
+        query.bindValue(":n", change);
+        query.bindValue(":un", user);
 
-    if(query.exec())
-    {
-        success = true;
+        if(query.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "update customer failed: " << query.lastError();
+        }
     }
-    else
+    else if(idExists(user))
     {
-        qDebug() << "update customer failed: " << query.lastError();
+        QSqlQuery query;
+        query.prepare("UPDATE customers SET (type) = (:n) WHERE (id) = (:un)");
+        query.bindValue(":n", change);
+        query.bindValue(":un", user);
+
+        if(query.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "update customer failed: " << query.lastError();
+        }
     }
 
     return success;

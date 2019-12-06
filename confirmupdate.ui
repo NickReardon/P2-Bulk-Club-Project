@@ -22,6 +22,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="placeholderText">
+    <string>Enter ID</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="nameEdit">
    <property name="geometry">
@@ -31,6 +34,9 @@
      <width>151</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Enter Name</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -90,7 +96,20 @@
     <string>OR</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="confirmButton">
+  <widget class="QPushButton" name="cancelButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>180</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="upgradeButton">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -100,10 +119,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Confirm</string>
+    <string>Upgrade</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="cancelButton">
+  <widget class="QPushButton" name="downgradeButton">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -113,7 +132,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>Downgrade</string>
    </property>
   </widget>
  </widget>
