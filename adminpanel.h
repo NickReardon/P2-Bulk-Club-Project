@@ -5,6 +5,7 @@
 #include "dbmanager.h"
 #include "addcustomer.h"
 #include "confirmupdate.h"
+#include "purchase.h"
 
 namespace Ui {
 class adminPanel;
@@ -18,6 +19,24 @@ public:
     explicit adminPanel(QWidget *parent = nullptr);
     ~adminPanel();
 
+    void updateReportProductView();
+
+    void updateTotalLabel();
+
+    void updateReportMemberView();
+
+    void updateReport();
+
+    void update_ReportRegularMembeCount();
+
+    void update_ReportExecutiveMemberCount();
+
+    void updatePurchases();
+    
+    void updateCustomers();
+    
+    void updateProducts();
+    
 private slots:
     void on_logoutButton_clicked();
 
@@ -41,12 +60,19 @@ private slots:
 
     void on_upgradeCustomer_clicked();
 
+    void on_ReportProductView_activated(const QModelIndex &index);
+
+    void on_ReportMemberView_pressed(const QModelIndex &index);
+
+    void on_ReportProductView_pressed(const QModelIndex &index);
+
 private:
     Ui::adminPanel *ui;
-    DbManager dbManager = DbManager("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
 
     QDate tempDate;
-
+    QDate firstDate;
+    QDate endDate;
 };
 
 #endif // ADMINPANEL_H

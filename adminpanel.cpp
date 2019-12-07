@@ -2,12 +2,27 @@
 #include "ui_adminpanel.h"
 #include "products.h"
 
+
+
 adminPanel::adminPanel(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::adminPanel)
 {
     ui->setupUi(this);
 
+    updatePurchases();
+
+    updateCustomers();
+    updateProducts();
+}
+
+adminPanel::~adminPanel()
+{
+    delete ui;
+}
+
+void adminPanel::updatePurchases()
+{
     QSqlQueryModel* modal=new QSqlQueryModel();
 
     QSqlQuery* qry=new QSqlQuery();
@@ -24,7 +39,10 @@ adminPanel::adminPanel(QWidget *parent) :
     {
         qDebug() << "fail!";
     }
+}
 
+void adminPanel::updateCustomers()
+{
     QSqlQueryModel* modal2=new QSqlQueryModel();
 
     QSqlQuery* qry2=new QSqlQuery();
@@ -41,6 +59,10 @@ adminPanel::adminPanel(QWidget *parent) :
     {
         qDebug() << "fail!";
     }
+}
+
+void adminPanel::updateProducts()
+{
     QSqlQueryModel* modal3=new QSqlQueryModel();
 
     QSqlQuery* qry3=new QSqlQuery();
@@ -59,14 +81,9 @@ adminPanel::adminPanel(QWidget *parent) :
     }
 }
 
-adminPanel::~adminPanel()
-{
-    delete ui;
-}
-
 void adminPanel::on_logoutButton_clicked()
 {
-    hide();
+    close();
 }
 
 void adminPanel::on_addCustomerButton_clicked()
@@ -95,15 +112,169 @@ void adminPanel::on_addCustomerButton_clicked()
     }
 }
 
+void adminPanel::updateReportProductView()
+{
+    QSqlQuery query;
+
+    switch(ui->ReportMemberTypeDropdown->currentIndex())
+    {
+    case 0:
+        query.prepare("SELECT DISTINCT product FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by name ASC");
+        break;
+
+    case 1:
+        query.prepare("SELECT DISTINCT product FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'regular' ORDER by name ASC");
+        break;
+
+    case 2:
+        query.prepare("SELECT DISTINCT product FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'executive' ORDER by name ASC" );
+        break;
+    }
+
+
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+
+    QSqlQueryModel *productListModel = new QSqlQueryModel;
+    productListModel->setQuery(query);
+
+    ui->ReportProductView->setModel(productListModel);
+    ui->ReportProductView->setColumnWidth(0, 130);
+}
+
+void adminPanel::updateTotalLabel()
+{
+
+
+    double total;
+
+    QSqlQuery query;
+
+    switch(ui->ReportMemberTypeDropdown->currentIndex())
+    {
+    case 0:
+        query.prepare("SELECT SUM(total) FROM purchases WHERE date >= (:start) AND date <= (:end)");
+        break;
+
+    case 1:
+        query.prepare("SELECT SUM(total) FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'regular'");
+        break;
+
+    case 2:
+        query.prepare("SELECT SUM(total) FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'executive'" );
+        break;
+    }
+
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    query.next();
+
+    total = query.record().value(0).toDouble();
+
+    ui->ReportTotalLabel->setText("Report Total Revenue: $ " + QString::number(total));
+}
+
+void adminPanel::updateReportMemberView()
+{
+    QSqlQuery query;
+    switch(ui->ReportMemberTypeDropdown->currentIndex())
+    {
+    case 0:
+        query.prepare("SELECT DISTINCT id, name FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by id ASC");
+        break;
+
+    case 1:
+        query.prepare("SELECT DISTINCT id, name FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'regular' ORDER by id ASC");
+        break;
+
+    case 2:
+        query.prepare("SELECT DISTINCT id, name FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'executive' ORDER by id ASC" );
+        break;
+    }
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+
+    QSqlQueryModel *memberList = new QSqlQueryModel;
+    memberList->setQuery(query);
+
+    ui->ReportMemberView->setModel(memberList);
+    ui->ReportMemberView->setColumnWidth(0, 40);
+    ui->ReportMemberView->setColumnWidth(1, 92);
+}
+
+void adminPanel::updateReport()
+{
+    QSqlQuery query;
+    switch(ui->ReportMemberTypeDropdown->currentIndex())
+    {
+    case 0:
+        query.prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by date ASC, time ASC");
+        break;
+
+    case 1:
+        query.prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'regular' ORDER by date ASC, time ASC");
+        break;
+
+    case 2:
+        query.prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'executive' ORDER by date ASC, time ASC" );
+        break;
+    }
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery(query);
+    ui->SalesReportTable->setModel(model);
+    ui->SalesReportTable->setColumnWidth(0, 40);
+    ui->SalesReportTable->setColumnWidth(3, 60);
+    ui->SalesReportTable->setColumnWidth(4, 100);
+    ui->SalesReportTable->setColumnWidth(5, 50);
+    ui->SalesReportTable->setColumnWidth(6, 80);
+    ui->SalesReportTable->setColumnWidth(7, 80);
+    ui->SalesReportTable->setColumnWidth(8, 60);
+}
+
+void adminPanel::update_ReportRegularMembeCount()
+{
+    int count;
+
+    QSqlQuery query;
+    query.prepare("SELECT count(DISTINCT id) FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'regular'");
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    query.next();
+
+    count = query.value(0).toInt();
+
+    ui->ReportRegularCount->setText("Regular members: " + QString::number(count));
+}
+
+void adminPanel::update_ReportExecutiveMemberCount()
+{
+    int count;
+
+    QSqlQuery query;
+    query.prepare("SELECT count(DISTINCT id) FROM purchases WHERE date >= (:start) AND date <= (:end) AND type = 'executive'");
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    query.next();
+
+    count = query.value(0).toInt();
+    ui->ReportExecutiveCount->setText("Executive members: " + QString::number(count));
+}
+
 void adminPanel::on_GenerateReportButton_released()
 {
-    QSqlQueryModel *model = new QSqlQueryModel;
+    //QSqlQueryModel *model = new QSqlQueryModel;
 
-    QDate firstDate = tempDate;
+    firstDate = tempDate;
 
-    QDate lastDate = tempDate;
-
-
+    endDate = tempDate;
 
     switch(ui->ReportTypeDropdown->currentIndex())
     {
@@ -114,26 +285,26 @@ void adminPanel::on_GenerateReportButton_released()
         if(tempDate.dayOfWeek() == 7)
         {
             firstDate = firstDate.addDays( 0 - ( 7 - firstDate.dayOfWeek()));
-            lastDate = lastDate.addDays( 0 - ( 1 - lastDate.dayOfWeek()));
+            endDate = endDate.addDays( 0 - ( 1 - endDate.dayOfWeek()));
         }
         else
         {
             firstDate = firstDate.addDays( 0 - firstDate.dayOfWeek());
-            lastDate = lastDate.addDays( 6 - lastDate.dayOfWeek());
+            endDate = endDate.addDays( 6 - endDate.dayOfWeek());
         }
 
         break;
     case 2://monthly
         firstDate.setDate(firstDate.year(), firstDate.month(), 1);
 
-        lastDate.setDate(lastDate.year(), lastDate.month(), lastDate.daysInMonth());
+        endDate.setDate(endDate.year(), endDate.month(), endDate.daysInMonth());
         break;
 
     case 3://yearly
         firstDate.setDate(firstDate.year(), 1, 1);
 
 
-        lastDate.setDate(lastDate.year(), 12, 31);
+        endDate.setDate(endDate.year(), 12, 31);
 
 
         break;
@@ -141,7 +312,7 @@ void adminPanel::on_GenerateReportButton_released()
     case 4://all time
         firstDate.setDate(1900, 1, 1);
 
-        lastDate.setDate(2999, 12, 31);
+        endDate.setDate(2999, 12, 31);
 
         break;
     }
@@ -149,10 +320,20 @@ void adminPanel::on_GenerateReportButton_released()
 
 
 
-    qDebug() << firstDate << lastDate;
-    dbManager.generateSalesReport(firstDate, lastDate, model);
+    qDebug() << firstDate << endDate;
 
-    ui->SalesReportTable->setModel(model);
+    updateReport();
+
+    updateTotalLabel();
+
+    updateReportProductView();
+
+    updateReportMemberView();
+
+    update_ReportRegularMembeCount();
+
+    update_ReportExecutiveMemberCount();
+
 }
 
 void adminPanel::on_salesReportCalendar_selectionChanged()
@@ -207,9 +388,9 @@ void adminPanel::on_productDel_clicked()
 
 void adminPanel::on_testButton_clicked()
 {
-    products purProduct(3);
-    purProduct.setModal(true);
-    purProduct.exec();
+    purchase page;
+    page.setModal(true);
+    page.exec();
 
     dbManager.reOpen();
     QSqlQueryModel* modal=new QSqlQueryModel();
@@ -322,4 +503,41 @@ void adminPanel::on_upgradeCustomer_clicked()
     {
         qDebug() << "fail!";
     }
+}
+
+void adminPanel::on_ReportProductView_activated(const QModelIndex &index)
+{
+    QSqlQuery query;
+    query.prepare("SELECT SUM(quantity) FROM purchases WHERE date >= (:start) AND date <= (:end) AND product = (:product)");
+    query.bindValue(":product", index.data().toString());
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery(query);
+    model->setHeaderData(0,Qt::Horizontal,"Total Quntity");
+    ui->ReportProductQuantity->setModel(model);
+    ui->ReportProductQuantity->setColumnWidth(0, 130);
+
+}
+
+void adminPanel::on_ReportMemberView_pressed(const QModelIndex &index)
+{
+    QSqlQuery query;
+    query.prepare("SELECT product, quantity, price, total FROM purchases WHERE date >= (:start) AND date <= (:end) AND id = (:id)  ORDER by date ASC, time ASC");
+    query.bindValue(":id", index.siblingAtColumn(0).data().toInt());
+    query.bindValue(":start", firstDate);
+    query.bindValue(":end", endDate);
+    query.exec();
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery(query);
+    ui->ReportProductMemberPurchases->setModel(model);
+    ui->ReportProductMemberPurchases->setColumnWidth(1, 55);
+    ui->ReportProductMemberPurchases->setColumnWidth(2, 40);
+    ui->ReportProductMemberPurchases->setColumnWidth(3, 40);
+}
+
+void adminPanel::on_ReportProductView_pressed(const QModelIndex &index)
+{
+    on_ReportProductView_activated(index);
 }
