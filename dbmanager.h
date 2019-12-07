@@ -71,7 +71,7 @@ public:
      * @param username, password, name, address, city of the user, value changing and admin ability to change information
      * @return true - updates account information, false - does not allow account to be updates
      */
-    bool updateAccount(const QString &username, const QString &password, const QString &name, const QString &address, const QString &city, const QString &email, const QString &value, const int admin, const QString& interest);
+    bool updateAccount(const QString &change, const QString &user);
 
     /**
      * @brief checks to see if the username entered is an admin

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "dbmanager.h"
 #include "addcustomer.h"
+#include "confirmupdate.h"
 
 namespace Ui {
 class adminPanel;

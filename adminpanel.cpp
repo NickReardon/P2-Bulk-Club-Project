@@ -265,7 +265,7 @@ void adminPanel::on_removeCustomerButton_clicked()
     else if(!dbManager.nameExists(ui->removeEdit->text()) && !dbManager.idExists(ui->removeEdit->text()))
     {
         ui->removeEdit->setText("");
-        ui->removeEdit->setPlaceholderText("Name Doesn't Exists!");
+        ui->removeEdit->setPlaceholderText("Name/ID Doesn't Exists!");
         success = true;
     }
 
@@ -300,5 +300,26 @@ void adminPanel::on_removeCustomerButton_clicked()
 
 void adminPanel::on_upgradeCustomer_clicked()
 {
+    confirmUpdate window2;
+    window2.setModal(true);
+    window2.exec();
 
+    dbManager.reOpen();
+
+    QSqlQueryModel* modal2=new QSqlQueryModel();
+
+    QSqlQuery* qry2=new QSqlQuery();
+
+    qry2->prepare("SELECT * FROM customers ORDER by id ASC");
+
+    if(qry2->exec())
+    {
+        modal2->setQuery(*qry2);
+
+        ui->memberView->setModel(modal2);
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
 }
