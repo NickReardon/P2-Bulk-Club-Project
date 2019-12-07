@@ -1,7 +1,7 @@
 #include "adminpanel.h"
 #include "ui_adminpanel.h"
 #include "products.h"
-
+#include "readfromfile.h"
 
 
 adminPanel::adminPanel(QWidget *parent) :
@@ -540,4 +540,11 @@ void adminPanel::on_ReportMemberView_pressed(const QModelIndex &index)
 void adminPanel::on_ReportProductView_pressed(const QModelIndex &index)
 {
     on_ReportProductView_activated(index);
+}
+
+void adminPanel::on_readFromFileButton_released()
+{
+    readFromFile fileOpen;
+    fileOpen.setModal(true);
+    fileOpen.exec();
 }

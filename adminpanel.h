@@ -66,6 +66,8 @@ private slots:
 
     void on_ReportProductView_pressed(const QModelIndex &index);
 
+    void on_readFromFileButton_released();
+
 private:
     Ui::adminPanel *ui;
     DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");

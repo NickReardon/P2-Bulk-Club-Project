@@ -32,7 +32,8 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         products.cpp \
-        purchase.cpp
+        purchase.cpp \
+        readfromfile.cpp
 
 HEADERS += \
         addcustomer.h \
@@ -41,7 +42,8 @@ HEADERS += \
         dbmanager.h \
         mainwindow.h \
         products.h \
-        purchase.h
+        purchase.h \
+        readfromfile.h
 
 FORMS += \
         addcustomer.ui \
@@ -49,7 +51,8 @@ FORMS += \
         confirmupdate.ui \
         mainwindow.ui \
         products.ui \
-        purchase.ui
+        purchase.ui \
+        readfromfile.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

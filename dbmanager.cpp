@@ -529,13 +529,12 @@ bool DbManager::removeEmailCustomer(const QString &email)
  * @param username, item1Count, item2Count, item3Count, and total cost of products in cart
  * @return true - makes the purchase, false - does not make purchase
  */
-bool DbManager::makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type)
+bool DbManager::makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type, const QDate &date)
 {
 
     bool success = false;
 
 
-    QDate date = QDate::currentDate();
     QTime time = QTime::currentTime();
 
     QSqlQuery query;
@@ -546,7 +545,7 @@ bool DbManager::makePurchase(const int &id, const QString &name, const QString &
     query.bindValue(":product", product);
     query.bindValue(":quantity", quantity);
     query.bindValue(":price", price);
-    query.bindValue(":date", date);
+    query.bindValue(":date", date.toString("yyyy-MM-dd"));
     query.bindValue(":time", time);
 
     if(query.exec())

@@ -140,7 +140,7 @@ public:
     bool insertEmailR(const QString &email);
 
 
-    bool makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type);
+    bool makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type, const QDate &date = QDate::currentDate());
 
     /**
      * @brief submits the testimonials for the customers who have already bought products
