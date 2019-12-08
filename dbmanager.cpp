@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -529,41 +529,24 @@ bool DbManager::removeEmailCustomer(const QString &email)
  * @param username, item1Count, item2Count, item3Count, and total cost of products in cart
  * @return true - makes the purchase, false - does not make purchase
  */
-bool DbManager::makePurchase(const QString &username, const int item1Count, const int item2Count, const int item3Count, const double total)
+bool DbManager::makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type, const QDate &date)
 {
 
     bool success = false;
 
-    QString name;
+
+    QTime time = QTime::currentTime();
+
     QSqlQuery query;
-    query.prepare("SELECT name FROM BulkClub WHERE ( username ) = ( :username )");
-    query.bindValue(":username", username);
-
-    if (query.exec())
-    {
-        if (query.next())
-        {
-            name = query.value("name").toString();
-            qDebug() << name;
-        }
-    }
-    else
-    {
-        qDebug() << name << query.lastError();
-
-    }
-
-
-
-    QDateTime purchaseDate = QDateTime::currentDateTime();
-    query.prepare("INSERT INTO purchases (username, tier1, tier2, tier3, total, datetime, name) VALUES (?,?,?,?,?,?,?)");
-    query.addBindValue(username);
-    query.addBindValue(item1Count);
-    query.addBindValue(item2Count);
-    query.addBindValue(item3Count);
-    query.addBindValue(total);
-    query.addBindValue(purchaseDate);
-    query.addBindValue(name);
+    query.prepare("INSERT INTO purchases (id, name, type, product, quantity, price, date, time) VALUES ( :id , :name , :type, :product , :quantity , :price , :date , :time )");
+    query.bindValue(":id", id);
+    query.bindValue(":name", name);
+    query.bindValue(":type", type);
+    query.bindValue(":product", product);
+    query.bindValue(":quantity", quantity);
+    query.bindValue(":price", price);
+    query.bindValue(":date", date.toString("yyyy-MM-dd"));
+    query.bindValue(":time", time);
 
     if(query.exec())
     {
@@ -680,10 +663,27 @@ return success;
 
 
 
-bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model)
+bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model, double &total)
 {
 
     QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT SUM(total) FROM purchases WHERE date >= (:start) AND date <= (:end)");
+    qry->bindValue(":start", startDate);
+    qry->bindValue(":end", endDate);
+
+
+
+    if(qry->exec())
+    {
+        qry->next();
+        total = qry->value(0).toDouble();
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+
 
     qry->prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by time ASC");
     qry->bindValue(":start", startDate);
@@ -702,4 +702,54 @@ bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate
 
         return false;
     }
+}
+
+bool DbManager::updateCustomerRevenue(const int &id, const double &revenue)
+{
+    bool success = false;
+    QString name;
+
+    QSqlQuery query;
+    query.prepare("UPDATE customers SET (total, rebate) = ( ( :total + total ) , ( rebate + :rebate ) ) WHERE (id) = (:id)");
+    query.bindValue(":total", revenue);
+    query.bindValue(":rebate", (QString::number( (revenue*.02), 'f', 2).toDouble()));
+    query.bindValue(":id", id);
+
+    if(query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "update customer totals: " << query.lastError();
+    }
+
+
+    return success;
+
+}
+
+
+bool DbManager::updateProductFromPurchase(const QString &name, const double &quantity, const double &revenue)
+{
+    bool success = false;
+
+    QSqlQuery query;
+    query.prepare("UPDATE products SET (sold, revenue) = ( ( :quantity + sold ) , ( revenue + :revenue ) ) WHERE (name) = (:name)");
+    query.bindValue(":quantity", quantity);
+    query.bindValue(":revenue", revenue);
+    query.bindValue(":name", name);
+
+    if(query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "update product totals: " << query.lastError();
+    }
+
+
+    return success;
+
 }
