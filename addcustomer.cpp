@@ -1,6 +1,17 @@
 #include "addcustomer.h"
 #include "ui_addcustomer.h"
+/**
+ * @file
+ */
 
+
+/**
+ * @brief Constructor
+ *
+ * Constructor sets up ui for addCustomer
+ * @param *parent - for QDialog
+ */
+ */
 addCustomer::addCustomer(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addCustomer)
@@ -8,16 +19,30 @@ addCustomer::addCustomer(QWidget *parent) :
     ui->setupUi(this);
 }
 
+/**
+ * @brief Destructor
+ *
+ * Close the addCustomer UI
+ */
 addCustomer::~addCustomer()
 {
     delete ui;
 }
 
+/**
+ * @brief cancels addCustomer execution and closes UI
+ * @return nothing - void
+ */
 void addCustomer::on_cancelCustomerButton_clicked()
 {
     hide();
 }
 
+/**
+ * @brief on user click, validates all data input for user data values and adds to DB
+ * @return nothing - void
+ *
+ */
 void addCustomer::on_addCustomerButton_clicked()
 {
     bool success = false;
