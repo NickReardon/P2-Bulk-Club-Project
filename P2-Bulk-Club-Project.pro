@@ -29,6 +29,7 @@ SOURCES += \
         adminpanel.cpp \
         confirmupdate.cpp \
         dbmanager.cpp \
+        expiredisplay.cpp \
         main.cpp \
         mainwindow.cpp \
         products.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
         adminpanel.h \
         confirmupdate.h \
         dbmanager.h \
+        expiredisplay.h \
         mainwindow.h \
         products.h \
         purchase.h \
@@ -49,6 +51,7 @@ FORMS += \
         addcustomer.ui \
         adminpanel.ui \
         confirmupdate.ui \
+        expiredisplay.ui \
         mainwindow.ui \
         products.ui \
         purchase.ui \

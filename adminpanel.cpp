@@ -14,6 +14,7 @@ adminPanel::adminPanel(QWidget *parent) :
 
     updateCustomers();
     updateProducts();
+    totalView();
 }
 
 adminPanel::~adminPanel()
@@ -34,6 +35,30 @@ void adminPanel::updatePurchases()
         modal->setQuery(*qry);
 
         ui->purchaseView->setModel(modal);
+        ui->purchaseView->setColumnWidth(0, 40);
+        ui->purchaseView->setColumnWidth(1, 155);
+        ui->purchaseView->setColumnWidth(3, 170);
+        ui->purchaseView->setColumnWidth(7, 70);
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+}
+
+void adminPanel::totalView()
+{
+    QSqlQueryModel* modal3=new QSqlQueryModel();
+
+    QSqlQuery* qry3=new QSqlQuery();
+
+    qry3->prepare("SELECT SUM(total) From purchases");
+
+    if(qry3->exec())
+    {
+        modal3->setQuery(*qry3);
+
+        ui->totalView->setModel(modal3);
     }
     else
     {
@@ -54,6 +79,7 @@ void adminPanel::updateCustomers()
         modal2->setQuery(*qry2);
 
         ui->memberView->setModel(modal2);
+        ui->memberView->setColumnWidth(1, 155);
     }
     else
     {
@@ -229,11 +255,13 @@ void adminPanel::updateReport()
     model->setQuery(query);
     ui->SalesReportTable->setModel(model);
     ui->SalesReportTable->setColumnWidth(0, 40);
-    ui->SalesReportTable->setColumnWidth(3, 60);
-    ui->SalesReportTable->setColumnWidth(4, 100);
-    ui->SalesReportTable->setColumnWidth(5, 50);
-    ui->SalesReportTable->setColumnWidth(6, 80);
-    ui->SalesReportTable->setColumnWidth(7, 80);
+    ui->SalesReportTable->setColumnWidth(1, 145);
+    ui->SalesReportTable->setColumnWidth(2, 60);
+    ui->SalesReportTable->setColumnWidth(3, 150);
+    ui->SalesReportTable->setColumnWidth(4, 55);
+    ui->SalesReportTable->setColumnWidth(5, 40);
+    ui->SalesReportTable->setColumnWidth(6, 58);
+    ui->SalesReportTable->setColumnWidth(7, 70);
     ui->SalesReportTable->setColumnWidth(8, 60);
 }
 
@@ -402,35 +430,8 @@ void adminPanel::on_testButton_clicked()
         modal->setQuery(*qry);
         ui->productView->setModel(modal);
     }
-}
 
-void adminPanel::on_productSearch_editingFinished()
-{
-    QString str = ui->productSearch->text();
-
-    dbManager.reOpen();
-    QSqlQueryModel* modal=new QSqlQueryModel();
-    QSqlQuery *qry=new QSqlQuery();
-
-    if(str == "")
-    {
-        qry->prepare("SELECT * FROM products ORDER by name ASC");
-        if(qry->exec())
-        {
-            modal->setQuery(*qry);
-            ui->productView->setModel(modal);
-        }
-
-    }else
-    {
-        qry->prepare("SELECT * FROM products WHERE name = :n");
-        qry->bindValue(":n",str);
-        if(qry->exec())
-        {
-            modal->setQuery(*qry);
-            ui->productView->setModel(modal);
-        }
-    }
+    updateCustomers();
 }
 
 void adminPanel::on_removeCustomerButton_clicked()
@@ -547,4 +548,195 @@ void adminPanel::on_readFromFileButton_released()
     readFromFile fileOpen;
     fileOpen.setModal(true);
     fileOpen.exec();
+}
+
+void adminPanel::on_showallButton_clicked()
+{
+    totalView();
+    updatePurchases();
+    ui->purchaseSearch->setText("");
+    ui->purchaseSearch->setPlaceholderText("Enter Name or ID");
+}
+
+void adminPanel::on_showallProducts_clicked()
+{
+    updateProducts();
+    ui->productSearch->setText("");
+    ui->productSearch->setPlaceholderText("Product name");
+}
+
+void adminPanel::on_productSearch_returnPressed()
+{
+    QString str = ui->productSearch->text();
+
+    dbManager.reOpen();
+    QSqlQueryModel* modal=new QSqlQueryModel();
+    QSqlQuery *qry=new QSqlQuery();
+
+    if(str == "")
+    {
+        qry->prepare("SELECT * FROM products ORDER by name ASC");
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->productView->setModel(modal);
+        }
+
+    }else if(dbManager.productExists(str))
+    {
+        qry->prepare("SELECT * FROM products WHERE name = :n");
+        qry->bindValue(":n",str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->productView->setModel(modal);
+        }
+    }
+    else
+    {
+        ui->productSearch->setText("");
+        ui->productSearch->setPlaceholderText("Product Doesn't Exists!");
+    }
+}
+
+void adminPanel::on_purchaseSearch_returnPressed()
+{
+    QString str = ui->purchaseSearch->text();
+
+    dbManager.reOpen();
+    QSqlQueryModel* modal=new QSqlQueryModel();
+    QSqlQuery *qry=new QSqlQuery();
+
+    if(str == "")
+    {
+        totalView();
+        updatePurchases();
+
+    }else if(dbManager.nameExists(str))
+    {
+        qry->prepare("SELECT SUM(total) From customers Where name = (:nm)");
+        qry->bindValue(":nm",str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->totalView->setModel(modal);
+        }
+
+        QSqlQueryModel* modal=new QSqlQueryModel();
+
+        QSqlQuery* qry=new QSqlQuery();
+
+        qry->prepare("SELECT * FROM purchases WHERE name = (:nm) ORDER by date ASC");
+        qry->bindValue(":nm", str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+
+            ui->purchaseView->setModel(modal);
+        }
+        else
+        {
+            qDebug() << "fail!";
+        }
+    }
+    else if(dbManager.idExists(str))
+    {
+        qry->prepare("SELECT SUM(total) From customers Where id = (:nm)");
+        qry->bindValue(":nm",str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+            ui->totalView->setModel(modal);
+        }
+
+        QSqlQueryModel* modal=new QSqlQueryModel();
+
+        QSqlQuery* qry=new QSqlQuery();
+
+        qry->prepare("SELECT * FROM purchases WHERE id = (:nm) ORDER by date ASC");
+        qry->bindValue(":nm", str);
+        if(qry->exec())
+        {
+            modal->setQuery(*qry);
+
+            ui->purchaseView->setModel(modal);
+        }
+        else
+        {
+            qDebug() << "fail!";
+        }
+    }
+    else
+    {
+        ui->purchaseSearch->setText("");
+        ui->purchaseSearch->setPlaceholderText("Name/ID doesn't EXIST!");
+    }
+}
+
+void adminPanel::on_expireButton_released()
+{
+    QDate expire(ui->yearBox->value(), ui->monthBox->value(),1);
+
+    qDebug() << expire;
+
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT * FROM customers WHERE expire >= (:e) AND expire <= (:b)");
+    qry->bindValue(":e", expire.toString("yyyy-MM-dd"));
+    expire = QDate(expire.year(),expire.month(), expire.daysInMonth());
+    qry->bindValue(":b", expire.toString("yyyy-MM-dd"));
+
+    qDebug() << expire;
+
+    if(qry->exec())
+    {
+        modal->setQuery(*qry);
+
+        expireDisplay window2(this,modal);
+        window2.setModal(true);
+        window2.exec();
+
+        dbManager.reOpen();
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+}
+
+void adminPanel::on_showBox_currentIndexChanged(int index)
+{
+
+    QSqlQueryModel* modal=new QSqlQueryModel();
+
+    QSqlQuery* qry=new QSqlQuery();
+
+    switch (index)
+    {
+        case 0 :  qry->prepare("SELECT * FROM customers ORDER by id ASC");
+
+            break;
+
+        case 1 :  qry->prepare("SELECT * FROM customers WHERE type = 'executive' ORDER by id ASC");
+
+            break;
+
+        case 2 :  qry->prepare("SELECT * FROM customers WHERE type = 'regular' ORDER by id ASC");
+
+            break;
+    }
+
+    if(qry->exec())
+    {
+        modal->setQuery(*qry);
+
+        ui->memberView->setModel(modal);
+        ui->memberView->setColumnWidth(1, 155);
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
 }

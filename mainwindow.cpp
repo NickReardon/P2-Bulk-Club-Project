@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QPixmap pix("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/SAND.png");
+    QPixmap pix("C:/Users/farna/documents/P2-Bulk-Club-Project/SAND.png");
     ui->picLabel->setPixmap(pix);
 
     //test

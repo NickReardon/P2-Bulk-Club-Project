@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/farna/documents/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -198,7 +198,7 @@ bool DbManager::productExists(const QString& name) const
         if (checkQuery.next())
         {
             exists = true;
-            QString username = checkQuery.value("username").toString();
+            QString username = checkQuery.value("name").toString();
             qDebug() << username;
         }
     }
@@ -711,7 +711,7 @@ bool DbManager::updateCustomerRevenue(const int &id, const double &revenue)
 
     QSqlQuery query;
     query.prepare("UPDATE customers SET (total, rebate) = ( ( :total + total ) , ( rebate + :rebate ) ) WHERE (id) = (:id)");
-    query.bindValue(":total", revenue);
+    query.bindValue(":total", (QString::number( (revenue+revenue*.0775), 'f', 2).toDouble()));
     query.bindValue(":rebate", (QString::number( (revenue*.02), 'f', 2).toDouble()));
     query.bindValue(":id", id);
 

@@ -6,6 +6,7 @@
 #include "addcustomer.h"
 #include "confirmupdate.h"
 #include "purchase.h"
+#include "expiredisplay.h"
 
 namespace Ui {
 class adminPanel;
@@ -32,6 +33,8 @@ public:
     void update_ReportExecutiveMemberCount();
 
     void updatePurchases();
+
+    void totalView();
     
     void updateCustomers();
     
@@ -54,8 +57,6 @@ private slots:
 
     void on_testButton_clicked();
 
-    void on_productSearch_editingFinished();
-
     void on_removeCustomerButton_clicked();
 
     void on_upgradeCustomer_clicked();
@@ -68,9 +69,21 @@ private slots:
 
     void on_readFromFileButton_released();
 
+    void on_showallButton_clicked();
+
+    void on_showallProducts_clicked();
+
+    void on_productSearch_returnPressed();
+
+    void on_purchaseSearch_returnPressed();
+
+    void on_expireButton_released();
+
+    void on_showBox_currentIndexChanged(int index);
+
 private:
     Ui::adminPanel *ui;
-    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/farna/documents/P2-Bulk-Club-Project/BulkClub.db");
 
     QDate tempDate;
     QDate firstDate;

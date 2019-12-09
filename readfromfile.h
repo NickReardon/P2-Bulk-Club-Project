@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::readFromFile *ui;
-    DbManager dbManager = DbManager("C:/Users/Nick/source/repos/P2-Bulk-Club-Project/BulkClub.db");
+    DbManager dbManager = DbManager("C:/Users/farna/documents/P2-Bulk-Club-Project/BulkClub.db");
 
     QString filename;
 
