@@ -93,7 +93,19 @@ public:
      * @return true - name exists, false - name does not exist within the database
      */
     bool nameExists(const QString &name) const;
+
+    /**
+     * @brief checks to see if the id entered exists within the database
+     * @param &id - id of the user
+     * @return true - id exists, false - id does not exist within the database
+     */
     bool idExists(const QString &id) const;
+
+    /**
+     * @brief checks to see if the product entered exists within the database
+     * @param &name - name of the product
+     * @return true - name exists, false - name does not exist within the database
+     */
     bool productExists(const QString &name) const;
 
     /**
@@ -123,6 +135,12 @@ public:
      * @return true - will remove user from database, false - will keep the user within the database
      */
     bool removeCustomer(const QString &username);
+
+    /**
+     * @brief removes customer id
+     * @param &ID- id of the user
+     * @return true - will remove user id from database, false - will keep the user id within the database
+     */
     bool removeCustomerId(const QString &ID);
 
     /**
@@ -164,10 +182,31 @@ public:
     bool removeTestimonial(const int id);
 
 
+    /**
+     * @brief genereates sales report with all relevant customer and product data from DB
+     * @param &startDate - marks starting date range for sales report
+     * @param &endDate - marks ending date range for sales report
+     * @param *model - points to SQLquery for DB
+     * @param &total -holds total values for sales report
+     * @return true - sales report generated with executed query, false - failure of execution
+     */
     bool generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model, double &total);
 
+    /**
+     * @brief update revenue from customer
+     * @param &id - id of customer in DB to modify
+     * @param &revenue - new value of revenue to apply to attribute
+     * @return true - succesful update , false - failure of execution
+     */
     bool updateCustomerRevenue(const int &id, const double &revenue);
 
+    /**
+     * @brief update values of quantity and revenue for products when a purchase is executed
+     * @param &name - name of product to be searched
+     * @param &revenue - new value of revenue to apply to attribute
+     * @param &quantity - new value of quantity to apply to attribute
+     * @return true - succesful update , false - failure of execution
+     */
     bool updateProductFromPurchase(const QString &name, const double &quantity, const double &revenue);
 
 private:
