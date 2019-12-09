@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
-    <height>568</height>
+    <width>913</width>
+    <height>543</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QTableView" name="expireView">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>30</y>
+     <x>10</x>
+     <y>10</y>
      <width>891</width>
      <height>521</height>
     </rect>
