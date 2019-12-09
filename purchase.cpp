@@ -52,7 +52,7 @@ void purchase::on_purchaseButton_released()
     dbManager.makePurchase(id, name, product, quantity, price, type);
     double revenue = QString::number( ((quantity * price) + (quantity * price * .0775)), 'f', 2).toDouble();
     qDebug() << revenue;
-    dbManager.updateCustomerRevenue(id, revenue);
+    dbManager.updateCustomerRevenue(id, quantity * price);
     dbManager.updateProductFromPurchase(product, quantity, revenue);
     close();
 }
