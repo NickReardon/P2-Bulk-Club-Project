@@ -27,23 +27,35 @@ CONFIG += c++11
 SOURCES += \
         addcustomer.cpp \
         adminpanel.cpp \
+        confirmupdate.cpp \
         dbmanager.cpp \
+        expiredisplay.cpp \
         main.cpp \
         mainwindow.cpp \
-        products.cpp
+        products.cpp \
+        purchase.cpp \
+        readfromfile.cpp
 
 HEADERS += \
         addcustomer.h \
         adminpanel.h \
+        confirmupdate.h \
         dbmanager.h \
+        expiredisplay.h \
         mainwindow.h \
-        products.h
+        products.h \
+        purchase.h \
+        readfromfile.h
 
 FORMS += \
         addcustomer.ui \
         adminpanel.ui \
+        confirmupdate.ui \
+        expiredisplay.ui \
         mainwindow.ui \
-        products.ui
+        products.ui \
+        purchase.ui \
+        readfromfile.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

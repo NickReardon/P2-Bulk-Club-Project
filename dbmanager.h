@@ -71,7 +71,7 @@ public:
      * @param username, password, name, address, city of the user, value changing and admin ability to change information
      * @return true - updates account information, false - does not allow account to be updates
      */
-    bool updateAccount(const QString &username, const QString &password, const QString &name, const QString &address, const QString &city, const QString &email, const QString &value, const int admin, const QString& interest);
+    bool updateAccount(const QString &change, const QString &user);
 
     /**
      * @brief checks to see if the username entered is an admin
@@ -139,12 +139,8 @@ public:
      */
     bool insertEmailR(const QString &email);
 
-    /**
-     * @brief checks to see if it is possible to make a purchase
-     * @param username, item1Count, item2Count, item3Count, and total cost of products in cart
-     * @return true - makes the purchase, false - does not make purchase
-     */
-    bool makePurchase(const QString &username, const int item1Count, const int item2Count, const int item3Count, const double total);
+
+    bool makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type, const QDate &date = QDate::currentDate());
 
     /**
      * @brief submits the testimonials for the customers who have already bought products
@@ -168,7 +164,12 @@ public:
     bool removeTestimonial(const int id);
 
 
-    bool generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model);
+    bool generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model, double &total);
+
+    bool updateCustomerRevenue(const int &id, const double &revenue);
+
+    bool updateProductFromPurchase(const QString &name, const double &quantity, const double &revenue);
+
 private:
     QSqlDatabase m_db;
 };

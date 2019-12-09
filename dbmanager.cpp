@@ -42,7 +42,7 @@ bool DbManager::reOpen()
     bool answer = false;
 
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("C:/Users/farna/Documents/P2-Bulk-Club-Project/BulkClub.db");
+    m_db.setDatabaseName("C:/Users/farna/documents/P2-Bulk-Club-Project/BulkClub.db");
 
     if (!m_db.open())
     {
@@ -198,7 +198,7 @@ bool DbManager::productExists(const QString& name) const
         if (checkQuery.next())
         {
             exists = true;
-            QString username = checkQuery.value("username").toString();
+            QString username = checkQuery.value("name").toString();
             qDebug() << username;
         }
     }
@@ -304,29 +304,41 @@ QString DbManager::GetPassword(const QString& username) const
  * @param username, password, name, address, city of the user, value changing and admin ability to change information
  * @return true - updates account information, false - does not allow account to be updates
  */
-bool DbManager::updateAccount(const QString &username, const QString &password, const QString &name, const QString &address, const QString &city, const QString &email, const QString &value, const int admin, const QString& interest)
+bool DbManager::updateAccount(const QString &change, const QString &user)
 {
     bool success = false;
 
-    QSqlQuery query;
-    query.prepare("UPDATE BulkClub SET (name, password, address, city, email, value, admin, interest) = (:n, :pw, :ad, :c, :em, :va, :am, :it) WHERE (username) = (:un)");
-    query.bindValue(":n", name);
-    query.bindValue(":pw", password);
-    query.bindValue(":ad", address);
-    query.bindValue(":c", city);
-    query.bindValue(":em", email);
-    query.bindValue(":va", value);
-    query.bindValue(":am", admin);
-    query.bindValue(":it", interest);
-    query.bindValue(":un", username);
+    if(nameExists(user))
+    {
+        QSqlQuery query;
+        query.prepare("UPDATE customers SET (type) = (:n) WHERE (name) = (:un)");
+        query.bindValue(":n", change);
+        query.bindValue(":un", user);
 
-    if(query.exec())
-    {
-        success = true;
+        if(query.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "update customer failed: " << query.lastError();
+        }
     }
-    else
+    else if(idExists(user))
     {
-        qDebug() << "update customer failed: " << query.lastError();
+        QSqlQuery query;
+        query.prepare("UPDATE customers SET (type) = (:n) WHERE (id) = (:un)");
+        query.bindValue(":n", change);
+        query.bindValue(":un", user);
+
+        if(query.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "update customer failed: " << query.lastError();
+        }
     }
 
     return success;
@@ -517,41 +529,24 @@ bool DbManager::removeEmailCustomer(const QString &email)
  * @param username, item1Count, item2Count, item3Count, and total cost of products in cart
  * @return true - makes the purchase, false - does not make purchase
  */
-bool DbManager::makePurchase(const QString &username, const int item1Count, const int item2Count, const int item3Count, const double total)
+bool DbManager::makePurchase(const int &id, const QString &name, const QString &product, const int &quantity, const double &price, const QString &type, const QDate &date)
 {
 
     bool success = false;
 
-    QString name;
+
+    QTime time = QTime::currentTime();
+
     QSqlQuery query;
-    query.prepare("SELECT name FROM BulkClub WHERE ( username ) = ( :username )");
-    query.bindValue(":username", username);
-
-    if (query.exec())
-    {
-        if (query.next())
-        {
-            name = query.value("name").toString();
-            qDebug() << name;
-        }
-    }
-    else
-    {
-        qDebug() << name << query.lastError();
-
-    }
-
-
-
-    QDateTime purchaseDate = QDateTime::currentDateTime();
-    query.prepare("INSERT INTO purchases (username, tier1, tier2, tier3, total, datetime, name) VALUES (?,?,?,?,?,?,?)");
-    query.addBindValue(username);
-    query.addBindValue(item1Count);
-    query.addBindValue(item2Count);
-    query.addBindValue(item3Count);
-    query.addBindValue(total);
-    query.addBindValue(purchaseDate);
-    query.addBindValue(name);
+    query.prepare("INSERT INTO purchases (id, name, type, product, quantity, price, date, time) VALUES ( :id , :name , :type, :product , :quantity , :price , :date , :time )");
+    query.bindValue(":id", id);
+    query.bindValue(":name", name);
+    query.bindValue(":type", type);
+    query.bindValue(":product", product);
+    query.bindValue(":quantity", quantity);
+    query.bindValue(":price", price);
+    query.bindValue(":date", date.toString("yyyy-MM-dd"));
+    query.bindValue(":time", time);
 
     if(query.exec())
     {
@@ -668,10 +663,27 @@ return success;
 
 
 
-bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model)
+bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate, QSqlQueryModel *model, double &total)
 {
 
     QSqlQuery* qry=new QSqlQuery();
+
+    qry->prepare("SELECT SUM(total) FROM purchases WHERE date >= (:start) AND date <= (:end)");
+    qry->bindValue(":start", startDate);
+    qry->bindValue(":end", endDate);
+
+
+
+    if(qry->exec())
+    {
+        qry->next();
+        total = qry->value(0).toDouble();
+    }
+    else
+    {
+        qDebug() << "fail!";
+    }
+
 
     qry->prepare("SELECT * FROM purchases WHERE date >= (:start) AND date <= (:end) ORDER by time ASC");
     qry->bindValue(":start", startDate);
@@ -690,4 +702,54 @@ bool DbManager::generateSalesReport(const QDate &startDate, const QDate &endDate
 
         return false;
     }
+}
+
+bool DbManager::updateCustomerRevenue(const int &id, const double &revenue)
+{
+    bool success = false;
+    QString name;
+
+    QSqlQuery query;
+    query.prepare("UPDATE customers SET (total, rebate) = ( ( :total + total ) , ( rebate + :rebate ) ) WHERE (id) = (:id)");
+    query.bindValue(":total", (QString::number( (revenue+revenue*.0775), 'f', 2).toDouble()));
+    query.bindValue(":rebate", (QString::number( (revenue*.02), 'f', 2).toDouble()));
+    query.bindValue(":id", id);
+
+    if(query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "update customer totals: " << query.lastError();
+    }
+
+
+    return success;
+
+}
+
+
+bool DbManager::updateProductFromPurchase(const QString &name, const double &quantity, const double &revenue)
+{
+    bool success = false;
+
+    QSqlQuery query;
+    query.prepare("UPDATE products SET (sold, revenue) = ( ( :quantity + sold ) , ( revenue + :revenue ) ) WHERE (name) = (:name)");
+    query.bindValue(":quantity", quantity);
+    query.bindValue(":revenue", revenue);
+    query.bindValue(":name", name);
+
+    if(query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "update product totals: " << query.lastError();
+    }
+
+
+    return success;
+
 }

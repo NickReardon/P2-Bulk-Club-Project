@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
-    <height>439</height>
+    <width>1014</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,91 +18,386 @@
     <rect>
      <x>0</x>
      <y>30</y>
-     <width>821</width>
-     <height>411</height>
+     <width>1011</width>
+     <height>681</height>
     </rect>
    </property>
    <property name="currentIndex">
     <number>2</number>
    </property>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="SalesReports">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>Sales Reports</string>
     </attribute>
-    <widget class="QCalendarWidget" name="salesReportCalendar">
+    <widget class="QTableView" name="SalesReportTable">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>10</y>
+       <width>681</width>
+       <height>401</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QLabel" name="ReportTotalLabel">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>420</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QFrame" name="frame">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>280</width>
-       <height>156</height>
+       <width>301</width>
+       <height>371</height>
       </rect>
      </property>
-     <property name="gridVisible">
-      <bool>true</bool>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
-     <property name="verticalHeaderFormat">
-      <enum>QCalendarWidget::NoVerticalHeader</enum>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <widget class="QComboBox" name="ReportTypeDropdown">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>260</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <item>
+       <property name="text">
+        <string>Daily</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Weekly</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Monthly</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Yearly</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>All Time</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="GenerateReportButton">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>300</y>
+        <width>161</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Generate Report</string>
+      </property>
+     </widget>
+     <widget class="QCalendarWidget" name="salesReportCalendar">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>280</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="gridVisible">
+       <bool>true</bool>
+      </property>
+      <property name="verticalHeaderFormat">
+       <enum>QCalendarWidget::NoVerticalHeader</enum>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="ReportMemberTypeDropdown">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>260</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>All</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Regular</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Executive</string>
+       </property>
+      </item>
+     </widget>
     </widget>
-    <widget class="QTableView" name="SalesReportTable">
+    <widget class="QTableView" name="ReportProductView">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>10</y>
-       <width>501</width>
-       <height>361</height>
+       <x>10</x>
+       <y>450</y>
+       <width>131</width>
+       <height>151</height>
       </rect>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
-    <widget class="QPushButton" name="GenerateReportButton">
+    <widget class="QTableView" name="ReportProductQuantity">
      <property name="geometry">
       <rect>
-       <x>169</x>
-       <y>180</y>
-       <width>121</width>
-       <height>41</height>
+       <x>10</x>
+       <y>600</y>
+       <width>131</width>
+       <height>51</height>
       </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::NoSelection</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QTableView" name="ReportMemberView">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>450</y>
+       <width>161</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QTableView" name="ReportProductMemberPurchases">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>450</y>
+       <width>681</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QLabel" name="ReportRegularCount">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>420</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
-      <string>Generate Report</string>
+      <string/>
      </property>
     </widget>
-    <widget class="QComboBox" name="ReportTypeDropdown">
+    <widget class="QLabel" name="ReportExecutiveCount">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>420</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>180</y>
-       <width>111</width>
-       <height>41</height>
+       <y>420</y>
+       <width>101</width>
+       <height>21</height>
       </rect>
      </property>
-     <item>
-      <property name="text">
-       <string>Daily</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Weekly</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Monthly</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Yearly</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>All Time</string>
-      </property>
-     </item>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Click on Product</string>
+     </property>
     </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>420</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Click on Member</string>
+     </property>
+    </widget>
+    <zorder>frame</zorder>
+    <zorder>SalesReportTable</zorder>
+    <zorder>ReportTotalLabel</zorder>
+    <zorder>ReportProductView</zorder>
+    <zorder>ReportProductQuantity</zorder>
+    <zorder>ReportMemberView</zorder>
+    <zorder>ReportProductMemberPurchases</zorder>
+    <zorder>ReportRegularCount</zorder>
+    <zorder>ReportExecutiveCount</zorder>
+    <zorder>label_9</zorder>
+    <zorder>label_10</zorder>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -113,26 +408,26 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>781</width>
-       <height>331</height>
+       <width>981</width>
+       <height>551</height>
       </rect>
      </property>
     </widget>
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableView" name="totalView">
      <property name="geometry">
       <rect>
-       <x>670</x>
-       <y>350</y>
+       <x>870</x>
+       <y>570</y>
        <width>121</width>
-       <height>31</height>
+       <height>51</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>570</x>
-       <y>350</y>
+       <x>770</x>
+       <y>580</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -147,6 +442,69 @@
       <string>Total Purchases</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="readFromFileButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>580</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="text">
+      <string>Read Purchases From Fie</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="purchaseSearch">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>590</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Enter Name or ID</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>570</y>
+       <width>131</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Press Enter to search </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showallButton">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>590</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Show All Purchases</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -157,8 +515,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>781</width>
-       <height>271</height>
+       <width>981</width>
+       <height>541</height>
       </rect>
      </property>
     </widget>
@@ -166,8 +524,8 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>290</y>
-       <width>91</width>
+       <y>570</y>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
@@ -178,8 +536,8 @@
     <widget class="QPushButton" name="removeCustomerButton">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>290</y>
+       <x>130</x>
+       <y>570</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -191,9 +549,9 @@
     <widget class="QLineEdit" name="removeEdit">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>290</y>
-       <width>113</width>
+       <x>240</x>
+       <y>570</y>
+       <width>131</width>
        <height>20</height>
       </rect>
      </property>
@@ -205,27 +563,103 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>330</y>
-       <width>91</width>
+       <y>610</y>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Upgrade</string>
+      <string>Upgrade/Downgrade</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="downgradeCustomer">
+    <widget class="QPushButton" name="expireButton">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>330</y>
-       <width>101</width>
-       <height>31</height>
+       <x>900</x>
+       <y>590</y>
+       <width>75</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Downgrade</string>
+      <string>Search Expire</string>
      </property>
+    </widget>
+    <widget class="QSpinBox" name="monthBox">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>590</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>12</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="yearBox">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>590</y>
+       <width>61</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>2019</number>
+     </property>
+     <property name="maximum">
+      <number>2050</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>560</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Customers Expiration based on date</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="showBox">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>610</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>All</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Executive</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Regular</string>
+      </property>
+     </item>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_4">
@@ -246,7 +680,7 @@
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>140</y>
+       <y>100</y>
        <width>150</width>
        <height>50</height>
       </rect>
@@ -259,7 +693,7 @@
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>220</y>
+       <y>170</y>
        <width>150</width>
        <height>50</height>
       </rect>
@@ -272,7 +706,7 @@
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>290</y>
+       <y>240</y>
        <width>150</width>
        <height>50</height>
       </rect>
@@ -284,11 +718,14 @@
     <widget class="QLineEdit" name="productSearch">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>70</y>
+       <x>100</x>
+       <y>20</y>
        <width>150</width>
        <height>30</height>
       </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Product Name</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -304,12 +741,52 @@
       <string>Product Search:</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>0</y>
+       <width>131</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Press Enter to search </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showallProducts">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Show all Products</string>
+     </property>
+    </widget>
+    <zorder>productView</zorder>
+    <zorder>productAdd</zorder>
+    <zorder>productDel</zorder>
+    <zorder>testButton</zorder>
+    <zorder>label_2</zorder>
+    <zorder>productSearch</zorder>
+    <zorder>label_4</zorder>
+    <zorder>showallProducts</zorder>
    </widget>
   </widget>
   <widget class="QPushButton" name="logoutButton">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>930</x>
      <y>10</y>
      <width>75</width>
      <height>23</height>
